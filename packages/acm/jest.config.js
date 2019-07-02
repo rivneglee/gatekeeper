@@ -1,19 +1,21 @@
 module.exports = {
-    roots: [
-        "./tests"
-    ],
-    transform: {
-        '^.+\\.(js|jsx)?$': 'babel-jest'
-    },
-    moduleFileExtensions: [
-        "js",
-        "json"
-    ],
-    testRegex: "(/tests/.*.(test|spec)).(js?)$",
-    transformIgnorePatterns: [
-        '/node_modules/'
-    ],
-    coveragePathIgnorePatterns: [
-        "(tests/.*.mock).(js?)$"
-    ],
+  roots: [
+    "./tests"
+  ],
+  transform: {
+    "^.+\\.ts$": "ts-jest"
+  },
+  testRegex: "(/tests/.*.(test|spec)).(jsx?|tsx?)$",
+  moduleFileExtensions: [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
+  coveragePathIgnorePatterns: [
+    "(tests/.*.mock).(jsx?|tsx?)$"
+  ],
+  verbose: true
 };

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "build",
+    "lib": ["es2015"],
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "strict": true,
+    "composite": false,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "rootDir": "./"
+  }
+}

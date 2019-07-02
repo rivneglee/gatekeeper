@@ -4,15 +4,25 @@
   "engines": {
     "node": ">=10.*"
   },
+  "main": "build/src/index.js",
+  "typings": "build/src/index.d.ts",
   "scripts": {
     "test": "npx jest --watchAll",
-    "coverage": "npx jest --coverage"
+    "coverage": "npx jest --coverage",
+    "lint": "npx tslint --force --fix \"./src/**/*.ts\" \"./tests/**/*.ts\"",
+    "build": "tsc"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.11",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "babel-jest": "^24.8.0",
-    "jest": "^24.8.0"
+    "pre-push": "^0.1.1",
+    "tslint": "^5.15.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.4.2",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2"
   },
   "dependencies": {}
 }
