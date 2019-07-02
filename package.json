@@ -1,0 +1,12 @@
+{
+  "name": "gatekeeper",
+  "private": true,
+  "scripts": {
+    "postinstall": "lerna bootstrap && lerna run build",
+    "test": "lerna run test",
+    "build": "lerna run build"
+  },
+  "devDependencies": {
+    "lerna": "^3.13.4"
+  }
+}

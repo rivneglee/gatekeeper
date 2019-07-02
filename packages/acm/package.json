@@ -1,0 +1,18 @@
+{
+  "name": "gatekeeper-acm",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=10.*"
+  },
+  "scripts": {
+    "test": "npx jest --watchAll",
+    "coverage": "npx jest --coverage"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0"
+  },
+  "dependencies": {}
+}

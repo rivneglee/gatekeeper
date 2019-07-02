@@ -1,0 +1,16 @@
+.DS_Store
+.idea/
+*.iml
+*.ipr
+*.iws
+*.sass-cache
+*.swp
+coverage/
+node_modules/
+dist/
+.DS_Store
+/.cache/
+.npm/
+yarn-error.log
+lerna-debug.log
+tsconfig.tsbuildinfo

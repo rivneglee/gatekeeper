@@ -1,0 +1,19 @@
+{
+  "name": "api-gateway",
+  "description": "Express Gateway Instance Bootstraped from Command Line",
+  "repository": {},
+  "license": "UNLICENSED",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon --ext js,json --exec node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express-gateway": "^1.16.6",
+    "express-mung": "^0.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "1.18.9"
+  }
+}

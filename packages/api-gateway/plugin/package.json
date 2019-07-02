@@ -1,0 +1,13 @@
+{
+  "name": "express-gateway-plugin-shield",
+  "version": "1.1.0",
+  "description": "",
+  "main": "manifest.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
