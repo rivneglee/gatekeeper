@@ -24,7 +24,7 @@ module.exports = (gatewayExpressApp) => {
         if (!validateRequest(req)) {
             res.status(403).json({ message: "Permission Denied"});
         } else {
-            next();
+            setTimeout(next, 3000);
         }
     });
 };

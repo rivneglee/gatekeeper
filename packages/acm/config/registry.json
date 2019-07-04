@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "resources": [
+    {
+      "uri": "/papers/:paper-id/commits/*",
+      "taggers": [
+        {
+          "actions": ["POST"],
+          "key": [{ "name": "paper-id", "in": "path" }],
+          "tags": [{ "name":  "userId", "in": "jwt-token"}]
+        }
+      ]
+    }
+  ]
+}

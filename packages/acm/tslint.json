@@ -5,6 +5,8 @@
     "rules": {
         "eofline": false,
         "curly": false,
+        "prefer-array-literal": false,
+        "import-name": false,
         "variable-name": [true, "allow-pascal-case"]
     },
     "rulesDirectory": []

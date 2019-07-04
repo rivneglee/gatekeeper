@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "statements": [
+    {
+      "effect": "allow",
+      "resources": [
+        {
+          "uri": "/papers/:paper-id/commits",
+          "actions": ["GET"],
+          "conditions": [
+            {
+              "fn::or": [
+                {
+                  "fn::and": [
+                    {
+                      "fn::not": [
+                        {"path": "status", "in": "jwt-token"},
+                        "inactive"
+                      ]
+                    },
+                    {
+                      "fn::equal": [
+                        {"path": "userId", "in": "tags"},
+                        {"path": "userId", "in": "jwt-token"}
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "fn::equal": [
+                    {"path": "isAdmin", "in": "jwt-token"},
+                    true
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "uri": "/papers",
+          "actions": ["POST"],
+          "conditions": [
+            {
+              "fn::equal": [
+                {"name": "userId", "in": "jwt-token"},
+                {"name": "author", "in": "payload"}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
