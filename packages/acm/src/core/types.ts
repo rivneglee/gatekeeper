@@ -6,9 +6,9 @@ export interface Variable {
 export enum VariableSource {
  Path = 'pathVariables',
  JwtToken = 'jwtToken',
- Response = 'response',
- Request = 'request',
+ Payload = 'payload',
  Tags = 'tags',
+ QueryParams = 'queryParams',
 }
 
 export interface VariableContext {
@@ -29,6 +29,10 @@ export enum Effect {
   Allow = 'allow', Deny = 'deny',
 }
 
+export enum When {
+  OnReceive = 'onReceive', OnReturn = 'onReturn',
+}
+
 export enum Method {
   GET = 'GET',
   POST = 'POST',
@@ -38,15 +42,22 @@ export enum Method {
   OPTIONS = 'OPTIONS',
 }
 
+export interface Condition extends FnInvocation {}
+
 export interface Resource {
-  uri: string;
+  pattern: string;
   actions: Method[];
-  conditions: FnInvocation[];
+  conditions: Condition[];
 }
 
 export interface Statement {
   effect: Effect;
+  when: When;
   resources: Resource[];
+}
+
+export enum ValidationResult  {
+  Allow, Deny, NotMatch,
 }
 
 export interface Policy {

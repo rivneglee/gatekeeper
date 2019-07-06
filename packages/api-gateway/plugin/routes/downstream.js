@@ -16,8 +16,6 @@ const validateRequest = (req) => {
 };
 
 module.exports = (gatewayExpressApp) => {
-    gatewayExpressApp.use(mung.write(validateResponse));
-
     gatewayExpressApp.use(bodyParser.raw());
 
     gatewayExpressApp.all('/*', (req, res, next) => {
@@ -27,4 +25,6 @@ module.exports = (gatewayExpressApp) => {
             setTimeout(next, 3000);
         }
     });
+
+    gatewayExpressApp.use(mung.write(validateResponse));
 };

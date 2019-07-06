@@ -3,48 +3,52 @@
   "statements": [
     {
       "effect": "allow",
+      "when": "onReceive",
       "resources": [
         {
-          "uri": "/papers/:paper-id/commits",
+          "pattern": "/papers/:paper-id/commits",
           "actions": ["GET"],
           "conditions": [
             {
               "fn::or": [
-                {
-                  "fn::and": [
-                    {
-                      "fn::not": [
-                        {"path": "status", "in": "jwt-token"},
-                        "inactive"
-                      ]
-                    },
-                    {
-                      "fn::equal": [
-                        {"path": "userId", "in": "tags"},
-                        {"path": "userId", "in": "jwt-token"}
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "fn::equal": [
-                    {"path": "isAdmin", "in": "jwt-token"},
-                    true
-                  ]
-                }
-              ]
+              {
+                "fn::and": [
+                  {
+                    "fn::not": [
+                      {"path": "status", "in": "jwtToken"},
+                      "inactive"
+                    ]
+                  },
+                  {
+                    "fn::equal": [
+                      {"path": "userId", "in": "tags"},
+                      {"path": "userId", "in": "jwtToken"}
+                    ]
+                  }
+                ]
+              },
+              {
+                "fn::equal": [
+                  {"path": "isAdmin", "in": "jwtToken"},
+                  true
+                ]
+              }
+            ]
             }
           ]
         },
         {
-          "uri": "/papers",
+          "pattern": "/papers",
           "actions": ["POST"],
           "conditions": [
             {
-              "fn::equal": [
-                {"name": "userId", "in": "jwt-token"},
-                {"name": "author", "in": "payload"}
-              ]
+              "when": "onReceive",
+              "test": {
+                "fn::equal": [
+                  {"name": "userId", "in": "jwtToken"},
+                  {"name": "author", "in": "payload"}
+                ]
+              }
             }
           ]
         }
