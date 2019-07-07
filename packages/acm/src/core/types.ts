@@ -62,5 +62,11 @@ export enum ValidationResult  {
 
 export interface Policy {
   version: string;
+  name: string;
   statements: Statement[];
+}
+
+export interface Role {
+  name: string;
+  policies: Policy[];
 }
