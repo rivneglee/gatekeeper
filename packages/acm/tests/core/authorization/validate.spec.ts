@@ -1,5 +1,17 @@
-import {matchStatement, validatePolicy, validateRole,} from '../../../src/core/authorization/validate';
-import {Effect, Method, Policy, Role, Statement, ValidationResult, When} from '../../../src';
+import {
+  matchStatement,
+  validatePolicy,
+  validateRole,
+} from '../../../src/core/authorization/validate';
+import {
+  Effect,
+  Method,
+  Policy,
+  Role,
+  Statement,
+  ValidationResult,
+  When,
+} from '../../../src';
 
 describe('validate', () => {
   const trueCondition = { 'fn::equal': [1, 1] };
