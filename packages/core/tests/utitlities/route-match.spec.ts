@@ -1,4 +1,4 @@
-import match from '../../../src/core/utilities/route-match';
+import match from '../../src/utilities/route-match';
 
 describe('route-match', () => {
   it('should return true if uri absolutely equal to pattern', () => {

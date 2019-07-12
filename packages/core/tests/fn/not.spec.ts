@@ -1,4 +1,4 @@
-import fn from '../../../src/core/fn/not';
+import fn from '../../src/fn/not';
 
 describe('fn::not', () => {
   describe('with primitive arguments', () => {

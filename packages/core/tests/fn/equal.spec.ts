@@ -1,4 +1,4 @@
-import fn from '../../../src/core/fn/equal';
+import fn from '../../src/fn/equal';
 
 describe('fn::equal', () => {
   describe('with primitive arguments', () => {

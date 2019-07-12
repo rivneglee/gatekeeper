@@ -1,0 +1,23 @@
+server:
+  protocol: http
+  port: 8180
+servicesEndpoints:
+  paperwork:
+    url: 'http://localhost:5000'
+gatewayEndpoints:
+  paperwork:
+    paths:
+      - '/paper-service/*'
+      - '/paper-data-service/*'
+    proxy:
+      validate:
+        authentication:
+          enabled: true
+        authorization:
+          enabled: true
+      forward:
+        serviceEndpoint: paperwork
+        changeOrigin: true
+        prependPath:  true
+        ignorePath:   false
+        stripPath:    true

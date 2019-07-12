@@ -4,18 +4,16 @@ export interface Variable {
 }
 
 export enum VariableSource {
- Path = 'pathVariables',
  JwtToken = 'jwtToken',
- Payload = 'payload',
  Tags = 'tags',
- QueryParams = 'queryParams',
+ Request = 'request',
+ Response = 'response',
 }
 
 export interface VariableContext {
   jwtToken?: any;
-  response?: any;
   request?: any;
-  pathVariables?: any;
+  response?: any;
   tags?: any;
 }
 

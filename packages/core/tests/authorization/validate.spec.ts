@@ -2,7 +2,7 @@ import {
   matchStatement,
   validatePolicy,
   validateRole,
-} from '../../../src/core/authorization/validate';
+} from '../../src/authorization/validate';
 import {
   Effect,
   Method,
@@ -11,7 +11,7 @@ import {
   Statement,
   ValidationResult,
   When,
-} from '../../../src';
+} from '../../src';
 
 describe('validate', () => {
   const trueCondition = { 'fn::equal': [1, 1] };
@@ -71,7 +71,7 @@ describe('validate', () => {
       });
       it('should return true if at least a resource matched', () => {
         expect(matchStatement({ ...statement, resources: [
-            { pattern: '/foo', conditions: [trueCondition], actions: [Method.GET] },
+            { pattern: '/foo', conditions: [trueCondition, falseCondition], actions: [Method.GET] },
             { pattern: '/bar', conditions: [trueCondition], actions: [Method.GET] },
         ]}, Method.GET, '/foo')).toBe(true);
       });

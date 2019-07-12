@@ -1,5 +1,5 @@
-import invoke from '../../../src/core/authorization/invoke';
-import { FnInvocation, Variable, VariableSource } from '../../../src/core/types';
+import invoke from '../../src/authorization/invoke';
+import { FnInvocation, Variable, VariableSource } from '../../src/types';
 
 describe('invoke', () => {
   const fnA = (a: any, b: any) => a + b;
@@ -31,14 +31,14 @@ describe('invoke', () => {
     beforeAll(() => {
       jest.spyOn(fnMap, 'fn::a');
       const var1: Variable = { path: 'a.b', in: VariableSource.JwtToken };
-      const var2: Variable = { path: 'id', in: VariableSource.Path };
+      const var2: Variable = { path: 'id', in: VariableSource.Request };
       const invocation: FnInvocation = {
         'fn::a': [
           var1,
           var2,
         ],
       };
-      invoke(invocation, { jwtToken: { a: { b: 1 } }, pathVariables: { id: '123' } }, fnMap);
+      invoke(invocation, { jwtToken: { a: { b: 1 } }, request: { id: '123' } }, fnMap);
     });
 
     it('should call fn with correct arguments', () => {
@@ -70,14 +70,14 @@ describe('invoke', () => {
           },
         ],
       };
-      const variable: Variable = { path: 'id', in: VariableSource.Path };
+      const variable: Variable = { path: 'id', in: VariableSource.Request };
       const invocation: FnInvocation = {
         'fn::a': [
           fn,
           variable,
         ],
       };
-      invoke(invocation, { pathVariables: { id: '123' } }, fnMap);
+      invoke(invocation, { request: { id: '123' } }, fnMap);
     });
 
     it('should call fn with correct arguments', () => {

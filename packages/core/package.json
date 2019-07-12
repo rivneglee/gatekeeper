@@ -1,5 +1,5 @@
 {
-  "name": "gatekeeper-acm",
+  "name": "gatekeeper-core",
   "version": "1.0.0",
   "engines": {
     "node": ">=10.*"
