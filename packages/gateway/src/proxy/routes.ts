@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import {
   GatewayConfiguration,
-  GatewayEndpoint, GatewayPlugin,
+  GatewayEndpoint,
+  MiddlewareProxyOption,
   ProxyRouteConfig,
 } from '../types';
 import { ProxyOptions } from 'express-http-proxy';
-import HTTPProxyError from '../exception/HTTPProxyError';
+import HttpProxyError from '../exception/http-proxy-error';
 
 const resolvePath = (request: Request,
                      gatewayEndpoint: GatewayEndpoint) => {
@@ -26,7 +27,7 @@ const resolvePath = (request: Request,
 };
 
 export const createRoutes = (config: GatewayConfiguration,
-                             plugins: GatewayPlugin[] = []): ProxyRouteConfig[] => {
+                             middlewares: MiddlewareProxyOption[] = []): ProxyRouteConfig[] => {
   const { gatewayEndpoints, servicesEndpoints } = config;
   return Object.entries(gatewayEndpoints).map(([_, endpoint]) => {
     const { paths, proxy } = endpoint;
@@ -34,22 +35,20 @@ export const createRoutes = (config: GatewayConfiguration,
     const proxyOptions: ProxyOptions = {
       proxyReqPathResolver: (request: Request) => resolvePath(request, endpoint),
       proxyReqBodyDecorator: (bodyContent: any, srcReq: Request) => {
-        return plugins.reduce((acc, { onRequest }) =>
+        return middlewares.reduce((acc, { onRequest }) =>
           onRequest(srcReq, acc, endpoint), bodyContent);
       },
       userResDecorator: (proxyRes: Response,
                          proxyResData: any,
                          userReq: Request,
                          userRes: Response) => {
-        return plugins.reduce((acc, { onResponse }) =>
+        return middlewares.reduce((acc, { onResponse }) =>
           onResponse(userReq, userRes, acc, endpoint), proxyResData);
       },
       proxyErrorHandler: (err: any, res: Response, next: NextFunction) => {
-        if (err instanceof HTTPProxyError) {
-          res.status(err.statusCode);
+        if (err instanceof HttpProxyError) {
           res.header('content-type', 'application/json');
-          res.write(JSON.stringify({ message: err.message }));
-          res.end();
+          res.status(err.statusCode).send(JSON.stringify({ message: err.message }));
         } else {
           next(err);
         }

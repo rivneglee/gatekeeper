@@ -1,4 +1,4 @@
-export default class HTTPProxyError {
+export default class HttpProxyError {
   private readonly httpStatusCode: number;
   private readonly errorMessage: string;
 

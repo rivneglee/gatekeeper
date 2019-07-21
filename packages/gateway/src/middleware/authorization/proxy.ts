@@ -1,7 +1,7 @@
-import { validateRole, VariableContext, When, Method } from 'gatekeeper-core';
 import { Request, Response } from 'express';
-import { GatewayEndpoint } from '../types';
-import HTTPProxyError from '../exception/HTTPProxyError';
+import { validateRole, VariableContext, When, Method } from '../../../../core/build/src';
+import { GatewayEndpoint } from '../../types';
+import HttpProxyError from '../../exception/http-proxy-error';
 
 const policy = {
   version: '1.0.0',
@@ -46,13 +46,39 @@ const policy = {
   ],
 };
 
-const getPoliciesByRoleName = (roleName: string): any[] => [policy];
+const adminPolicy = {
+  version: '1.0.0',
+  name: 'AdminAccess',
+  statements: [
+    {
+      effect: 'allow',
+      when: 'onReceive',
+      resources: [
+        {
+          pattern: '/admin/*',
+          actions: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+          conditions: [
+            {
+              'fn::equal': [
+                { path: 'isAdmin', in: 'jwtToken' },
+                true,
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+const getPoliciesByRoleName = (roleName: string): any[] => [adminPolicy, policy];
 
 const parseToken = (request: Request) => {
   const auth = request.get('Authorization');
   return auth ? {
     userId: 'foo',
     role: 'StandardUser',
+    isAdmin: true,
   } : '';
 };
 
@@ -76,7 +102,7 @@ export default {
     };
     (request as any).variableContext = context;
     const authorized = checkAuthorization(jwtToken.role, request, When.OnReceive, context);
-    if (!authorized) throw new HTTPProxyError(403, 'Permission Denied');
+    if (!authorized) throw new HttpProxyError(403, 'Permission Denied');
     return payload;
   },
   onResponse: (request: Request,
@@ -88,7 +114,7 @@ export default {
     variableContext.payload = payload;
     variableContext.response = response;
     const authorized = checkAuthorization(jwtToken, request, When.OnReturn, variableContext);
-    if (!authorized) throw new HTTPProxyError(403, 'Permission Denied');
+    if (!authorized) throw new HttpProxyError(403, 'Permission Denied');
     return payload;
   },
 };

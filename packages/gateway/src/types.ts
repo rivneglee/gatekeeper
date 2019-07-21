@@ -1,8 +1,9 @@
 import { ProxyOptions } from 'express-http-proxy';
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 
 export interface GatewayConfiguration {
-  server: ServerConfig;
+  gateway: ServerConfig;
+  admin: ServerConfig;
   servicesEndpoints: {[key: string]: ServiceEndpoint};
   gatewayEndpoints: {[key: string]: GatewayEndpoint};
 }
@@ -52,12 +53,17 @@ export interface ProxyRouteConfig {
   target: ServiceEndpoint;
 }
 
-export interface GatewayPlugin {
+export interface MiddlewareProxyOption {
   onRequest: (request: Request, payload: any, endpoint: GatewayEndpoint) => any;
   onResponse: (
     request: Request,
     response: Response,
     payload: any,
     endpoint: GatewayEndpoint,
-    ) => any;
+  ) => any;
+}
+
+export interface Middleware {
+  init: (gatewayRouter: Router, adminRouter: Router) => void;
+  proxy: MiddlewareProxyOption;
 }
