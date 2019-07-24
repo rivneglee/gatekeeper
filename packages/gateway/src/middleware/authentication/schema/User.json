@@ -1,0 +1,30 @@
+{
+  "id": "/User",
+  "type": "object",
+  "required": [
+    "id",
+    "isAdmin",
+    "username",
+    "password",
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isAdmin": {
+      "type": "boolean"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    }
+  }
+}

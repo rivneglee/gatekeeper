@@ -4,8 +4,8 @@ import { Request, Response, Router } from 'express';
 export interface GatewayConfiguration {
   gateway: ServerConfig;
   admin: ServerConfig;
-  servicesEndpoints: {[key: string]: ServiceEndpoint};
-  gatewayEndpoints: {[key: string]: GatewayEndpoint};
+  middlewares: {[key: string]: any};
+  endpoints: {[key: string]: GatewayEndpoint};
 }
 
 export interface ServerConfig {
@@ -13,32 +13,15 @@ export interface ServerConfig {
   port: number;
 }
 
-export interface ServiceEndpoint {
-  url: string;
-}
-
-export interface Authentication {
-  enabled: boolean;
-}
-
-export interface Authorization {
-  enabled: boolean;
-}
-
-export interface ValidationOptions {
-  authentication: Authentication;
-  authorization: Authorization;
-}
-
 export interface ForwardOptions {
-  serviceEndpoint: string;
+  url: string;
   changeOrigin: boolean;
   ignorePath:   boolean;
   stripPath:    boolean;
 }
 
 export interface GatewayProxyOptions {
-  validate: ValidationOptions;
+  additionalProps: {[key: string]: any};
   forward: ForwardOptions;
 }
 
@@ -50,7 +33,7 @@ export interface GatewayEndpoint {
 export interface ProxyRouteConfig {
   paths: string[];
   proxyOptions: ProxyOptions;
-  target: ServiceEndpoint;
+  target: string;
 }
 
 export interface MiddlewareProxyOption {
@@ -63,7 +46,11 @@ export interface MiddlewareProxyOption {
   ) => any;
 }
 
+export interface MiddlewareConfig {
+  name: string;
+  settings: { [key: string]: any };
+}
+
 export interface Middleware {
-  init: (gatewayRouter: Router, adminRouter: Router) => void;
-  proxy: MiddlewareProxyOption;
+  init: (gatewayRouter: Router, adminRouter: Router) => MiddlewareProxyOption;
 }

@@ -17,7 +17,7 @@ const policy = {
           conditions: [
             {
               'fn::equal': [
-                { path: 'userId', in: 'jwtToken' },
+                { path: 'username', in: 'jwtToken' },
                 { path: 'author', in: 'payload' },
               ],
             },
@@ -35,7 +35,7 @@ const policy = {
           conditions: [
             {
               'fn::equal': [
-                { path: 'userId', in: 'jwtToken' },
+                { path: 'username', in: 'jwtToken' },
                 { path: 'author', in: 'payload' },
               ],
             },
@@ -73,15 +73,6 @@ const adminPolicy = {
 
 const getPoliciesByRoleName = (roleName: string): any[] => [adminPolicy, policy];
 
-const parseToken = (request: Request) => {
-  const auth = request.get('Authorization');
-  return auth ? {
-    userId: 'foo',
-    role: 'StandardUser',
-    isAdmin: true,
-  } : '';
-};
-
 const checkAuthorization = (role: string,
                             request: Request,
                             when: When,
@@ -92,29 +83,39 @@ const checkAuthorization = (role: string,
   }, request.method as Method, request.path, when, context);
 };
 
-export default {
-  onRequest: (request: Request, payload: any, endpoint: GatewayEndpoint) => {
-    const jwtToken: any = parseToken(request);
-    const context: VariableContext = {
-      jwtToken,
-      request,
-      payload,
-    };
-    (request as any).variableContext = context;
-    const authorized = checkAuthorization(jwtToken.role, request, When.OnReceive, context);
-    if (!authorized) throw new HttpProxyError(403, 'Permission Denied');
-    return payload;
-  },
-  onResponse: (request: Request,
-               response: Response,
-               payload: any,
-               endpoint: GatewayEndpoint) => {
-    const variableContext =  (request as any).variableContext;
-    const { jwtToken } = variableContext;
-    variableContext.payload = payload;
-    variableContext.response = response;
-    const authorized = checkAuthorization(jwtToken, request, When.OnReturn, variableContext);
-    if (!authorized) throw new HttpProxyError(403, 'Permission Denied');
-    return payload;
-  },
-};
+export default () => {
+  return  {
+    onRequest: (request: Request, payload: any, endpoint: GatewayEndpoint) => {
+      const { proxy } = endpoint;
+      const { additionalProps = {} } = proxy;
+      if (additionalProps.authorization) {
+        const { jwtToken = {} } = request as any;
+        const context: VariableContext = {
+          jwtToken,
+          request,
+          payload,
+        };
+        (request as any).variableContext = context;
+        const authorized = checkAuthorization(jwtToken.role, request, When.OnReceive, context);
+        if (!authorized) throw new HttpProxyError(403, 'Permission Denied');
+      }
+      return payload;
+    },
+    onResponse: (request: Request,
+                 response: Response,
+                 payload: any,
+                 endpoint: GatewayEndpoint) => {
+      const { proxy } = endpoint;
+      const { additionalProps = {} } = proxy;
+      if (additionalProps.authorization) {
+        const variableContext =  (request as any).variableContext;
+        const { jwtToken } = variableContext;
+        variableContext.payload = payload;
+        variableContext.response = response;
+        const authorized = checkAuthorization(jwtToken, request, When.OnReturn, variableContext);
+        if (!authorized) throw new HttpProxyError(403, 'Permission Denied');
+      }
+      return payload;
+    },
+  };
+}

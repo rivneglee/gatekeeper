@@ -8,6 +8,7 @@ export enum VariableSource {
  Tags = 'tags',
  Request = 'request',
  Response = 'response',
+ Payload = 'payload',
 }
 
 export interface VariableContext {
@@ -15,6 +16,7 @@ export interface VariableContext {
   request?: any;
   response?: any;
   tags?: any;
+  payload?: any;
 }
 
 export type FnArg = Variable | number | boolean | string | undefined | null;

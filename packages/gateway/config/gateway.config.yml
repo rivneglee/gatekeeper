@@ -4,40 +4,39 @@ admin:
 gateway:
   protocol: http
   port: 8180
-servicesEndpoints:
-  paperwork:
-    url: 'http://localhost:5000'
-  admin:
-    url: 'http://localhost:8280'
-gatewayEndpoints:
+middlewares:
+  body-parser:
+  authentication:
+    url: 'mongodb://localhost:27017'
+    username:
+    password:
+  authorization:
+endpoints:
+  login:
+    paths:
+      - '/auth/token'
+    proxy:
+      forward:
+        url: 'http://localhost:8280'
+        stripPath: false
   admin:
     paths:
       - '/admin/*'
     proxy:
-      validate:
-        authentication:
-          enabled: true
-        authorization:
-          enabled: true
       forward:
-        serviceEndpoint: admin
-        changeOrigin: true
-        prependPath:  true
-        ignorePath:   false
-        stripPath:    true
+        url: 'http://localhost:8280'
+        stripPath: true
+      additionalProps:
+        authorization: true
+        authentication: true
   paperwork:
     paths:
       - '/paper-service/*'
       - '/paper-data-service/*'
     proxy:
-      validate:
-        authentication:
-          enabled: true
-        authorization:
-          enabled: true
       forward:
-        serviceEndpoint: paperwork
-        changeOrigin: true
-        prependPath:  true
-        ignorePath:   false
-        stripPath:    true
+        url: 'http://localhost:5000'
+        stripPath: true
+      additionalProps:
+        authorization: true
+        authentication: true

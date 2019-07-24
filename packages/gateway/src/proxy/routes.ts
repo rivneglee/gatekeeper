@@ -1,35 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
 import {
   GatewayConfiguration,
-  GatewayEndpoint,
   MiddlewareProxyOption,
   ProxyRouteConfig,
 } from '../types';
 import { ProxyOptions } from 'express-http-proxy';
 import HttpProxyError from '../exception/http-proxy-error';
-
-const resolvePath = (request: Request,
-                     gatewayEndpoint: GatewayEndpoint) => {
-  const { path } = request;
-  const { proxy } = gatewayEndpoint;
-  if (proxy.forward.stripPath) {
-    const matchedPattern = gatewayEndpoint.paths.find(p => !!path.match(p));
-    if (matchedPattern) {
-      const prefix = path.match(matchedPattern) || [];
-      const strippedPath = path.replace(prefix[0], '/');
-      return `${strippedPath}${(request as any)._parsedUrl.search || ''}`;
-    }
-  }
-  if (proxy.forward.ignorePath) {
-    return '';
-  }
-  return path;
-};
+import { resolvePath } from './resolve-path';
 
 export const createRoutes = (config: GatewayConfiguration,
                              middlewares: MiddlewareProxyOption[] = []): ProxyRouteConfig[] => {
-  const { gatewayEndpoints, servicesEndpoints } = config;
-  return Object.entries(gatewayEndpoints).map(([_, endpoint]) => {
+  const { endpoints } = config;
+  return Object.entries(endpoints).map(([_, endpoint]) => {
     const { paths, proxy } = endpoint;
     const { forward } = proxy;
     const proxyOptions: ProxyOptions = {
@@ -58,7 +40,7 @@ export const createRoutes = (config: GatewayConfiguration,
     return {
       paths,
       proxyOptions,
-      target: servicesEndpoints[forward.serviceEndpoint],
+      target: forward.url,
     };
   });
 };

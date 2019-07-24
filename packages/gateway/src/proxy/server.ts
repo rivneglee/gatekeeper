@@ -1,10 +1,10 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import proxy from 'express-http-proxy';
 import cors from 'cors';
 import { createRoutes } from './routes';
-import authorize from '../middleware/authorization';
-import parseBody from '../middleware/parse-body';
 import { GatewayConfiguration } from '../types';
+import { loadMiddlewares } from './middlewares';
 
 export const startServer = (config: GatewayConfiguration) => {
   const gatewayPort = config.gateway.port;
@@ -12,14 +12,14 @@ export const startServer = (config: GatewayConfiguration) => {
 
   const adminPort = config.admin.port;
   const admin = express();
-
-  [authorize, parseBody].forEach(middleware => middleware.init(gateway, admin));
-
+  admin.use(bodyParser.json());
+  const middlewares = loadMiddlewares(config.middlewares).map(middleware => middleware.init(gateway, admin));
+  console.log(middlewares);
   gateway.use(cors());
 
-  createRoutes(config, [parseBody.proxy, authorize.proxy])
+  createRoutes(config, middlewares)
     .forEach(({ paths, target, proxyOptions }) =>
-      gateway.all(paths, proxy(target.url, proxyOptions)));
+      gateway.all(paths, proxy(target, proxyOptions)));
 
   admin.listen(adminPort, () => {
     console.log(`Admin Dashboard is running at ${adminPort}`);

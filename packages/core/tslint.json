@@ -8,7 +8,8 @@
         "prefer-array-literal": false,
         "import-name": false,
         "align": [false, "parameters"],
-        "variable-name": [true, "allow-pascal-case"]
+        "variable-name": [true, "allow-pascal-case"],
+        "max-line-length": [true, 130]
     },
     "rulesDirectory": []
 }

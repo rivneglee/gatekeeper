@@ -10,14 +10,16 @@ const proxy = (bodyContent: any, contentType: string) => {
   return bodyContent;
 };
 
-export default {
-  onRequest: (request: Request, payload: any, endpoint: GatewayEndpoint) => {
-    return proxy(payload, request.get('content-type') || '');
-  },
-  onResponse: (request: Request,
-               response: Response,
-               payload: any,
-               endpoint: GatewayEndpoint) => {
-    return proxy(payload, response.get('content-type') || '');
-  },
+export default () => {
+  return {
+    onRequest: (request: Request, payload: any, endpoint: GatewayEndpoint) => {
+      return proxy(payload, request.get('content-type') || '');
+    },
+    onResponse: (request: Request,
+                 response: Response,
+                 payload: any,
+                 endpoint: GatewayEndpoint) => {
+      return proxy(payload, response.get('content-type') || '');
+    },
+  };
 };
