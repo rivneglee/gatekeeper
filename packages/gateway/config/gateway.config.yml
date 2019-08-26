@@ -6,11 +6,11 @@ gateway:
   port: 8180
 middlewares:
   body-parser:
-  authentication:
-    url: 'mongodb://localhost:27017'
-    username:
-    password:
   authorization:
+    storage:
+      url: 'mongodb://localhost:27017'
+      username:
+      password:
 endpoints:
   login:
     paths:
@@ -32,7 +32,6 @@ endpoints:
   paperwork:
     paths:
       - '/paper-service/*'
-      - '/paper-data-service/*'
     proxy:
       forward:
         url: 'http://localhost:5000'

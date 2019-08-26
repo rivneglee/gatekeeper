@@ -2,7 +2,7 @@
   "name": "gatekeeper-gateway",
   "version": "1.0.0",
   "engines": {
-    "node": ">=10.*"
+    "node": ">=11.*"
   },
   "main": "build/src/index.js",
   "typings": "build/src/index.d.ts",

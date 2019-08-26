@@ -4,7 +4,7 @@ import proxy from 'express-http-proxy';
 import cors from 'cors';
 import { createRoutes } from './routes';
 import { GatewayConfiguration } from '../types';
-import { loadMiddlewares } from './middlewares';
+import { initMiddlewares } from './middlewares';
 
 export const startServer = (config: GatewayConfiguration) => {
   const gatewayPort = config.gateway.port;
@@ -13,8 +13,7 @@ export const startServer = (config: GatewayConfiguration) => {
   const adminPort = config.admin.port;
   const admin = express();
   admin.use(bodyParser.json());
-  const middlewares = loadMiddlewares(config.middlewares).map(middleware => middleware.init(gateway, admin));
-  console.log(middlewares);
+  const middlewares = initMiddlewares(gateway, admin, config.middlewares);
   gateway.use(cors());
 
   createRoutes(config, middlewares)

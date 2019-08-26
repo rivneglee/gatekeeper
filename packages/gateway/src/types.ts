@@ -52,5 +52,5 @@ export interface MiddlewareConfig {
 }
 
 export interface Middleware {
-  init: (gatewayRouter: Router, adminRouter: Router) => MiddlewareProxyOption;
+  init: (gatewayRouter: Router, adminRouter: Router, settings: object) => MiddlewareProxyOption;
 }

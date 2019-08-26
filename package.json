@@ -7,8 +7,10 @@
     "build": "lerna run build"
   },
   "devDependencies": {
+    "@types/shortid": "^0.0.29",
     "lerna": "^3.13.4"
   },
   "dependencies": {
+    "shortid": "^2.2.14"
   }
 }

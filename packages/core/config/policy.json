@@ -1,55 +1,93 @@
-{
-  "version": "1.0.0",
-  "statements": [
-    {
-      "effect": "allow",
-      "when": "onReceive",
-      "resources": [
-        {
-          "pattern": "/papers/:paper-id/commits",
-          "actions": ["GET"],
-          "conditions": [
-            {
-              "fn::or": [
-                {
-                  "fn::and": [
-                    {
-                      "fn::not": [
-                        {"path": "status", "in": "jwtToken"},
-                        "inactive"
-                      ]
-                    },
-                    {
-                      "fn::equal": [
-                        {"path": "userId", "in": "tags"},
-                        {"path": "userId", "in": "jwtToken"}
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "fn::equal": [
-                    {"path": "isAdmin", "in": "jwtToken"},
-                    true
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "pattern": "/papers",
-          "actions": ["POST"],
-          "conditions": [
-            {
-              "fn::equal": [
-                {"path": "userId", "in": "jwtToken"},
-                {"path": "author", "in": "payload"}
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "version": "1.0.0",
+    "name": "AdminAccess",
+    "statements": [
+      {
+        "effect": "allow",
+        "when": "onReceive",
+        "resources": [
+          {
+            "pattern": "/admin/*",
+            "actions": [
+              "GET",
+              "POST",
+              "DELETE",
+              "PUT",
+              "PATCH"
+            ],
+            "conditions": [
+              {
+                "fn::contains": [
+                  {
+                    "path": "roles",
+                    "in": "jwtToken"
+                  },
+                  "Admin"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "name": "StandardAccess",
+    "statements": [
+      {
+        "effect": "allow",
+        "when": "onReceive",
+        "resources": [
+          {
+            "pattern": "/paper-service/papers",
+            "actions": [
+              "POST"
+            ],
+            "conditions": [
+              {
+                "fn::equal": [
+                  {
+                    "path": "clientId",
+                    "in": "jwtToken"
+                  },
+                  {
+                    "path": "author",
+                    "in": "payload"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "effect": "allow",
+        "when": "onReturn",
+        "resources": [
+          {
+            "pattern": "/paper-service/papers",
+            "actions": [
+              "GET"
+            ],
+            "conditions": [
+              {
+                "fn::equal": [
+                  {
+                    "path": "clientId",
+                    "in": "jwtToken"
+                  },
+                  {
+                    "path": "author",
+                    "in": "payload"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
