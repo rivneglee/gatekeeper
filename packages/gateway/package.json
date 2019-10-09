@@ -7,7 +7,9 @@
   "main": "build/src/index.js",
   "typings": "build/src/index.d.ts",
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts --watch src config"
+    "example": "nodemon --exec ts-node example/index.ts --resolveJsonModule --watch src config",
+    "test": "npx jest",
+    "test:watch": "npx jest --watchAll"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -38,10 +40,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-http-proxy": "^1.5.1",
-    "yaml": "^1.6.0",
     "gatekeeper-core": "1.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.2.7",
     "jsonschema": "^1.2.4"
   }
 }

@@ -2,16 +2,17 @@ import {Effect, Method, Policy, Role, Statement, ValidationResult, VariableConte
 import match from '../utilities/route-match';
 import invoke from './invoke';
 
-export const matchStatement = (statement: Statement,
-                               action: Method,
-                               path: string,
-                               ctx: VariableContext = {}): boolean => {
-  const { resources = [] } = statement;
-  const matched = resources
-    .filter(({ pattern, actions }) => match(path, pattern) && actions.indexOf(action) !== -1);
-  const conditionMatched = matched.some(({ conditions }) =>
-      conditions.some(condition => invoke(condition, ctx)));
-  return !!conditionMatched;
+export const validateStatement = (statement: Statement,
+                                  action: Method,
+                                  path: string,
+                                  ctx: VariableContext = {}): ValidationResult => {
+  const { resources = [], effect } = statement;
+  const isMatch = resources
+    .some(({ pattern, actions, conditions }) => match(path, pattern)
+      && actions.indexOf(action) !== -1
+      && conditions.some(condition => invoke(condition, ctx)));
+  if (!isMatch) return ValidationResult.NotMatch;
+  return effect === Effect.Allow  ? ValidationResult.Allow : ValidationResult.Deny;
 };
 
 export const validatePolicy = (policy: Policy,
@@ -20,23 +21,22 @@ export const validatePolicy = (policy: Policy,
                                when: When,
                                ctx: VariableContext): ValidationResult => {
   const { statements = [] } = policy;
-  let matched = statements
-    .filter(s => s.when === when
-      && s.resources.some(({ pattern, actions }) => match(path, pattern) && actions.indexOf(action) !== -1));
+  const matched = statements.filter(s => s.when === when);
   if (matched.length === 0) return ValidationResult.NotMatch;
-  matched = matched.filter(s => s.when === when && matchStatement(s, action, path, ctx));
-  if (matched.length === 0) return ValidationResult.Deny;
-  return matched.some(s => s.effect === Effect.Deny)
-    ? ValidationResult.Deny : ValidationResult.Allow;
+  const results = statements.map(s => validateStatement(s, action, path, ctx));
+  const allowOrDeny = results.find(r => r === ValidationResult.Allow || r === ValidationResult.Deny);
+  if (!allowOrDeny) return ValidationResult.NotMatch;
+  return allowOrDeny;
 };
 
 export const validateRole = (role: Role,
                              action: Method,
                              path: string,
                              when: When,
-                             ctx: VariableContext): boolean => {
+                             ctx: VariableContext): ValidationResult => {
   const { policies = [] } = role;
   const results = policies.map(p => validatePolicy(p, action, path, when, ctx));
-  return results.some(r => r === ValidationResult.Deny) ?
-    false : (results.some(r => r === ValidationResult.Allow) || results.every(r => r === ValidationResult.NotMatch));
+  const allowOrDeny = results.find(r => r === ValidationResult.Allow || r === ValidationResult.Deny);
+  if (!allowOrDeny) return ValidationResult.NotMatch;
+  return allowOrDeny;
 };

@@ -1,21 +1,21 @@
 import * as jwt from 'jsonwebtoken';
 import { Request } from 'express';
-import { Method, Policy, Role, validateRole, VariableContext, When } from 'gatekeeper-core';
-import { createRepository } from './repository/factory';
+import {
+  Method,
+  Policy,
+  validateRole,
+  VariableContext,
+  When,
+} from 'gatekeeper-core';
 
-const DEFAULT_PRIVATE_KEY = 'foo_key';
+export const verifyToken = (accessToken: string, privateKey: string) => jwt.verify(accessToken, privateKey);
 
-export const generateToken = (client: any, privateKey: string = DEFAULT_PRIVATE_KEY) => {
-  return jwt.sign(client, privateKey, { expiresIn: 6000 });
-};
-
-export const verifyToken = (accessToken: string, privateKey: string = DEFAULT_PRIVATE_KEY) => jwt.verify(accessToken, privateKey);
-
-export const authenticate = (request: Request) => {
+export const authenticate = (request: Request, config: any) => {
+  const { privateKey } = config;
   const accessToken = request.get('Authorization');
   if (!accessToken) return false;
   try {
-    const decodedToken = verifyToken(accessToken);
+    const decodedToken = verifyToken(accessToken, privateKey);
     (request as any).jwtToken = decodedToken;
   } catch {
     return false;
@@ -23,18 +23,11 @@ export const authenticate = (request: Request) => {
   return true;
 };
 
-const getPolicies = async (roleNames: string[]) => {
-  const roleRepository = await createRepository('roles', 'name');
-  const policyRepository = await createRepository('policies', 'name');
-  const roles: any = await Promise.all(roleNames.map((roleName: string) => roleRepository.get(roleName)));
-  const policyNames = roles.flatMap((role: Role) => role.policies);
-  const policies: Policy[] = await Promise.all(policyNames.map((policyName: string) => policyRepository.get(policyName)));
-  return policies;
-};
-
 export const authorize = async (request: Request,
                           when: When,
-                          payload: any) => {
+                          payload: any,
+                          config: any)  => {
+  const { onFetchingPolicies } = config;
   const { jwtToken = {} } = request as any;
   const { roles = [] } = jwtToken;
   if (!roles) return false;
@@ -43,13 +36,8 @@ export const authorize = async (request: Request,
     request,
     payload,
   };
-
   (request as any).variableContext = context;
-  const policies = await getPolicies(roles);
-  return roles.some((role: string) =>
-    validateRole({
-      policies,
-      name: role,
-    }, request.method as Method, request.path, when, context) === true,
-  );
+  const policies: Policy[] = await onFetchingPolicies(roles);
+  const { method, path } = request;
+  return validateRole({ policies }, method as Method, path, when, context);
 };

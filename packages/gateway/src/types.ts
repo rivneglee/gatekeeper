@@ -4,7 +4,7 @@ import { Request, Response, Router } from 'express';
 export interface GatewayConfiguration {
   gateway: ServerConfig;
   admin: ServerConfig;
-  middlewares: {[key: string]: any};
+  middlewares: Middleware[];
   endpoints: {[key: string]: GatewayEndpoint};
 }
 
@@ -15,13 +15,13 @@ export interface ServerConfig {
 
 export interface ForwardOptions {
   url: string;
-  changeOrigin: boolean;
-  ignorePath:   boolean;
-  stripPath:    boolean;
+  changeOrigin?: boolean;
+  ignorePath?:   boolean;
+  stripPath?:    boolean;
 }
 
 export interface GatewayProxyOptions {
-  additionalProps: {[key: string]: any};
+  additionalProps?: {[key: string]: any};
   forward: ForwardOptions;
 }
 
@@ -46,11 +46,6 @@ export interface MiddlewareProxyOption {
   ) => any;
 }
 
-export interface MiddlewareConfig {
-  name: string;
-  settings: { [key: string]: any };
-}
-
 export interface Middleware {
-  init: (gatewayRouter: Router, adminRouter: Router, settings: object) => MiddlewareProxyOption;
+  init: (gatewayRouter: Router, adminRouter: Router) => MiddlewareProxyOption;
 }

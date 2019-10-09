@@ -1,19 +1,12 @@
 import { Router } from 'express';
 import createProxy from './proxy';
-import createRoute from './route';
-import shortId from 'shortid';
-import { configureStorage } from './repository/factory';
+import createRoutes from './route';
 
-export default {
-  init: (gatewayRouter: Router, adminRouter: Router, config: any = {}) => {
-    const rootClient = {
-      clientId: shortId.generate(),
-      clientSecret: shortId.generate(),
-      roles: ['Root', 'Admin'],
-    };
-    console.info('Random Root Access', rootClient.clientId, '/', rootClient.clientSecret);
-    configureStorage(config);
-    createRoute(adminRouter, { ...config, rootClient });
-    return createProxy();
+export default (config: any = {}) => ({
+  init: (gatewayRouter: Router, adminRouter: Router) => {
+    const { onInit, ...otherConfig } = config;
+    createRoutes(adminRouter, config);
+    onInit(adminRouter, otherConfig);
+    return createProxy(otherConfig);
   },
-};
+});

@@ -16,17 +16,23 @@ export const createRoutes = (config: GatewayConfiguration,
     const { forward } = proxy;
     const proxyOptions: ProxyOptions = {
       proxyReqPathResolver: (request: Request) => resolvePath(request, endpoint),
-      proxyReqBodyDecorator: (bodyContent: any, srcReq: Request) => {
-        return middlewares.reduce((acc, { onRequest }) =>
-          onRequest(srcReq, acc, endpoint), bodyContent);
-      },
+      proxyReqBodyDecorator: (bodyContent: any, srcReq: Request) =>
+        middlewares.reduce((acc, { onRequest }) => {
+          if (acc instanceof Promise) {
+            return acc.then(data => onRequest(srcReq, data, endpoint));
+          }
+          return onRequest(srcReq, acc, endpoint);
+        }, bodyContent),
       userResDecorator: (proxyRes: Response,
                          proxyResData: any,
                          userReq: Request,
-                         userRes: Response) => {
-        return middlewares.reduce((acc, { onResponse }) =>
-          onResponse(userReq, userRes, acc, endpoint), proxyResData);
-      },
+                         userRes: Response) =>
+         middlewares.reduce((acc, { onResponse }) => {
+           if (acc instanceof Promise) {
+             return acc.then(data => onResponse(userReq, userRes, data, endpoint));
+           }
+           return onResponse(userReq, userRes, acc, endpoint);
+         }, proxyResData),
       proxyErrorHandler: (err: any, res: Response, next: NextFunction) => {
         if (err instanceof HttpProxyError) {
           res.header('content-type', 'application/json');

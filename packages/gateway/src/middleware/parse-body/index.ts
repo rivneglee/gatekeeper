@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import createProxy from './proxy';
 
-export default {
+export default () => ({
   init: (gatewayRouter: Router, adminRouter: Router) => createProxy(),
-};
+});
