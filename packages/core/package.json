@@ -7,7 +7,8 @@
   "main": "build/src/index.js",
   "typings": "build/src/index.d.ts",
   "scripts": {
-    "test": "npx jest --watchAll",
+    "test": "npx jest",
+    "test:watch": "npx jest --watchAll",
     "coverage": "npx jest --coverage",
     "lint": "npx tslint --force --fix \"./src/**/*.ts\" \"./tests/**/*.ts\"",
     "build": "tsc"

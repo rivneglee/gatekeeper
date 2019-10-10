@@ -8,6 +8,7 @@
   "typings": "build/src/index.d.ts",
   "scripts": {
     "example": "nodemon --exec ts-node example/index.ts --resolveJsonModule --watch src config",
+    "build": "tsc",
     "test": "npx jest",
     "test:watch": "npx jest --watchAll"
   },

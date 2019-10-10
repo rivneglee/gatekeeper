@@ -19,4 +19,7 @@ describe('route-match', () => {
   it('should return true if wildcard is at middle of pattern', () => {
     expect(match('/abc/123/xyz/def', '/abc/:id/*/:name')).toBe(true);
   });
+  it('should return true if wildcard behind slash', () => {
+    expect(match('/abc/123/xyz/def', '/abc/*')).toBe(true);
+  });
 });

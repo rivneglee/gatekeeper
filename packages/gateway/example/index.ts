@@ -7,8 +7,7 @@ const users: any[] = require('./data/user.json');
 const roles: Role[] = require('./data/role.json') as Role[];
 const policies: Policy[] = require('./data/policy.json') as Policy[];
 
-const bodyParser = createBodyParserMiddleware();
-const auth = createAuthMiddleware({
+const authConfig = {
   onInit: (adminRouter: Router) => {
     adminRouter.get('/roles', (req: Request, res: Response) => res.json(roles));
     adminRouter.get('/policies', (req: Request, res: Response) => res.json(policies));
@@ -34,7 +33,10 @@ const auth = createAuthMiddleware({
     authUrl: '/auth/token',
     expiresIn: 60000,
   },
-});
+};
+
+const bodyParser = createBodyParserMiddleware();
+const auth = createAuthMiddleware(authConfig);
 
 const config: GatewayConfiguration = {
   admin: { protocol: 'http', port: 8280 },
@@ -44,7 +46,15 @@ const config: GatewayConfiguration = {
     auth,
   ],
   endpoints: {
-    login: { paths: ['/auth/token'], proxy: { forward: { url: 'http://localhost:8280', stripPath: false } } },
+    login: {
+      paths: ['/auth/token'],
+      proxy: {
+        forward: {
+          url: 'http://localhost:8280',
+          stripPath: false,
+        },
+      },
+    },
     admin: {
       paths: ['/admin/*'],
       proxy: {

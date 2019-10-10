@@ -57,7 +57,7 @@ export interface Statement {
 }
 
 export enum ValidationResult  {
-  Allow, Deny, NotMatch,
+  Allow, Deny, NotMatch, UnknownResource,
 }
 
 export interface Policy {
@@ -67,6 +67,6 @@ export interface Policy {
 }
 
 export interface Role {
-  name: string;
+  name?: string;
   policies: Policy[];
 }
