@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import { ValidationResult } from 'gatekeeper-core';
-import { When } from '../../../../core/build/src';
+import { ValidationResult, When } from 'gatekeeper-core';
 import { GatewayEndpoint } from '../../types';
 import HttpProxyError from '../../exception/http-proxy-error';
 import { authenticate, authorize } from './auth';

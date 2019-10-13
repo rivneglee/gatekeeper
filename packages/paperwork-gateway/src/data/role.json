@@ -1,0 +1,8 @@
+[
+  {
+    "name" : "StandardUser",
+    "policies" : [
+      "FullAccessOnMyResource"
+    ]
+  }
+]

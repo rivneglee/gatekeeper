@@ -1,0 +1,33 @@
+[
+  {
+    "name" : "FullAccessOnMyResource",
+    "statements" : [
+      {
+        "effect" : "allow",
+        "when" : "onReceive",
+        "resources" : [
+          {
+            "pattern" : "/paper-service/:uid/*",
+            "actions" : [
+              "POST", "GET", "DELETE", "PUT"
+            ],
+            "conditions" : [
+              {
+                "fn::equal" : [
+                  {
+                    "path" : "uid",
+                    "in" : "jwtToken"
+                  },
+                  {
+                    "path" : "author",
+                    "in" : "path"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
