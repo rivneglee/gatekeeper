@@ -5,7 +5,9 @@
     "node": ">=11.*"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts --resolveJsonModule --watch src config",
+    "dev": "nodemon --exec ts-node src/index.ts --resolveJsonModule --watch src config",
+    "build": "webpack --display-error-details",
+    "start": "node build/bundle.js",
     "test": "npx jest",
     "test:watch": "npx jest --watchAll"
   },
@@ -26,10 +28,15 @@
     "tslint": "^5.15.0",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.4.2",
-    "@types/shortid": "^0.0.29"
+    "@types/shortid": "^0.0.29",
+    "ts-loader": "^2.3.7",
+    "webpack": "3.8.1",
+    "webpack-cli": "^3.3.9",
+    "fork-ts-checker-webpack-plugin": "^0.2.8",
+    "uglifyjs-webpack-plugin": "1.2.5"
   },
   "dependencies": {
-    "gatekeeper-gateway": "1.0.0",
+    "gatekeeper-gateway": "^1.0.0",
     "mongodb": "^3.1.29",
     "shortid": "^2.2.14",
     "node-fetch": "^2.6.0"

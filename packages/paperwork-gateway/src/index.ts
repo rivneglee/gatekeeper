@@ -3,7 +3,6 @@ import {
   createBodyParserMiddleware,
   createAuthMiddleware,
   GatewayConfiguration,
-  HttpProxyError,
 } from 'gatekeeper-gateway';
 import logon from './easyassess/authenticator';
 
@@ -38,8 +37,8 @@ const bodyParser = createBodyParserMiddleware();
 const auth = createAuthMiddleware(authConfig);
 
 const config: GatewayConfiguration = {
-  admin: { protocol: 'http', port: 8280 },
-  gateway: { protocol: 'http', port: 8180 },
+  admin: { protocol: 'http', port: 5000 },
+  gateway: { protocol: 'http', port: 80 },
   middlewares: [
     bodyParser,
     auth,
@@ -49,7 +48,7 @@ const config: GatewayConfiguration = {
       paths: ['/auth/token'],
       proxy: {
         forward: {
-          url: 'http://localhost:8280',
+          url: 'http://localhost:5000',
           stripPath: false,
         },
       },
@@ -57,7 +56,7 @@ const config: GatewayConfiguration = {
     admin: {
       paths: ['/admin/*'],
       proxy: {
-        forward: { url: 'http://localhost:8280', stripPath: true },
+        forward: { url: 'http://localhost:5000', stripPath: true },
         additionalProps: { authorization: true, authentication: true },
       },
     },

@@ -4,11 +4,11 @@
   "engines": {
     "node": ">=11.*"
   },
-  "main": "build/src/index.js",
-  "typings": "build/src/index.d.ts",
+  "main": "build/index.js",
+  "typings": "build/types/src/index.d.ts",
   "scripts": {
     "example": "nodemon --exec ts-node example/index.ts --resolveJsonModule --watch src config",
-    "build": "tsc",
+    "build": "webpack --display-error-details",
     "test": "npx jest",
     "test:watch": "npx jest --watchAll"
   },
@@ -34,7 +34,12 @@
     "ts-node": "^8.3.0",
     "tslint": "^5.15.0",
     "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.4.2"
+    "typescript": "^3.4.2",
+    "ts-loader": "^2.3.7",
+    "webpack": "3.8.1",
+    "webpack-cli": "^3.3.9",
+    "fork-ts-checker-webpack-plugin": "^0.2.8",
+    "uglifyjs-webpack-plugin": "1.2.5"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
