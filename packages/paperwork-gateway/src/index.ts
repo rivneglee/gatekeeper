@@ -25,7 +25,8 @@ const authConfig = {
     onVerifyCredential: async (payload: any) => {
       const { username, password } = payload;
       const client = await logon(username, password);
-      return client;
+      const { affiliates, ...rest } = client;
+      return rest;
     },
     privateKey: 'foo_key',
     authUrl: '/auth/token',
@@ -38,7 +39,7 @@ const auth = createAuthMiddleware(authConfig);
 
 const config: GatewayConfiguration = {
   admin: { protocol: 'http', port: 5000 },
-  gateway: { protocol: 'http', port: 80 },
+  gateway: { protocol: 'http', port: 5100 },
   middlewares: [
     bodyParser,
     auth,
@@ -61,9 +62,9 @@ const config: GatewayConfiguration = {
       },
     },
     paperwork: {
-      paths: ['/paper-service/*'],
+      paths: ['/paperwork-service/:owner/*'],
       proxy: {
-        forward: { url: 'http://localhost:5000', stripPath: true },
+        forward: { url: 'http://localhost:3100', stripPath: true },
         additionalProps: { authorization: true, authentication: true },
       },
     },

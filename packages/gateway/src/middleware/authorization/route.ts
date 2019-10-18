@@ -13,6 +13,7 @@ export default (router: Router, config: any = {}) => {
       const { body } = request;
       const client = await onVerifyCredential(body);
       response.json({
+        client,
         accessToken: generateToken(client, privateKey, expiresIn),
       });
     } catch (e) {

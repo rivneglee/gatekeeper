@@ -18,7 +18,7 @@ spec:
         - name: paperwork-gateway
           image: registry-vpc.cn-beijing.aliyuncs.com/easyassess/paperwork-gateway:latest
           ports:
-            - containerPort: 80
+            - containerPort: 5100
               name: gateway
             - containerPort: 5000
               name: admin
@@ -39,8 +39,8 @@ spec:
   ports:
     - protocol: TCP
       name: gateway
-      port: 80
-      targetPort: 80
+      port: 5100
+      targetPort: 5100
     - protocol: TCP
       name: admin
       port: 5000

@@ -19,7 +19,7 @@ const invoke = (fnInvocation: FnInvocation, ctx: VariableContext, fnMap: any = f
       return invoke(arg, ctx, fnMap);
     }
     if (isVariable(arg)) {
-      return objectPath.get(ctx, `${arg.in}.${arg.path}`);
+      return String(objectPath.get(ctx, `${arg.in}.${arg.path}`));
     }
     return arg;
   });
