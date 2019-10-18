@@ -9,7 +9,7 @@
           {
             "pattern" : "/paperwork-service/:owner/*",
             "actions" : [
-              "POST", "GET", "DELETE", "PUT"
+              "POST", "DELETE", "PUT", "GET"
             ],
             "conditions" : [
               {
@@ -25,6 +25,58 @@
                 ]
               }
             ]
+          }
+        ]
+      },
+      {
+        "effect" : "allow",
+        "when" : "onReceive",
+        "resources" : [
+          {
+            "pattern" : "/paperwork-service/papers/*",
+            "actions" : [
+              "GET"
+            ],
+            "conditions" : []
+          }
+        ]
+      },
+      {
+        "effect" : "allow",
+        "when" : "onReceive",
+        "resources" : [
+          {
+            "pattern" : "/paperwork-service/papers/*/commits/*",
+            "actions" : [
+              "POST"
+            ],
+            "conditions" : []
+          }
+        ]
+      },
+      {
+        "effect" : "allow",
+        "when" : "onReceive",
+        "resources" : [
+          {
+            "pattern" : "/paperwork-service/layout/*",
+            "actions" : [
+              "GET"
+            ],
+            "conditions" : []
+          }
+        ]
+      },
+      {
+        "effect" : "allow",
+        "when" : "onReceive",
+        "resources" : [
+          {
+            "pattern" : "/paperwork-service/papers/*/aggregations",
+            "actions" : [
+              "POST"
+            ],
+            "conditions" : []
           }
         ]
       }

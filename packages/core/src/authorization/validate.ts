@@ -18,7 +18,7 @@ export const validateStatement = (statement: Statement,
     .some(({ pattern, actions, conditions }) =>
       match(path, pattern)
       && actions.indexOf(action) !== -1
-      && conditions.some(condition => invoke(condition, ctx)));
+      && (conditions.length === 0 || conditions.some(condition => invoke(condition, ctx))));
 
   if (!isMatch) return ValidationResult.NotMatch;
   return effect === Effect.Allow  ? ValidationResult.Allow : ValidationResult.Deny;

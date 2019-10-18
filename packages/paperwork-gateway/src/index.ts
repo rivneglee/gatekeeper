@@ -64,7 +64,7 @@ const config: GatewayConfiguration = {
     paperwork: {
       paths: ['/paperwork-service/:owner/*'],
       proxy: {
-        forward: { url: 'http://localhost:3100', stripPath: true },
+        forward: { url: 'http://paperwork-svc:3100', stripPath: true },
         additionalProps: { authorization: true, authentication: true },
       },
     },
