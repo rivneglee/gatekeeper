@@ -59,6 +59,19 @@
         "when" : "onReceive",
         "resources" : [
           {
+            "pattern" : "/paperwork-service/commits/*",
+            "actions" : [
+              "GET"
+            ],
+            "conditions" : []
+          }
+        ]
+      },
+      {
+        "effect" : "allow",
+        "when" : "onReceive",
+        "resources" : [
+          {
             "pattern" : "/paperwork-service/exports/papers/*/commits",
             "actions" : [
               "GET"
