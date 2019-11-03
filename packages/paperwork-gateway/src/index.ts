@@ -25,8 +25,7 @@ const authConfig = {
     onVerifyCredential: async (payload: any) => {
       const { username, password } = payload;
       const client = await logon(username, password);
-      const { affiliates, ...rest } = client;
-      return rest;
+      return client;
     },
     privateKey: 'foo_key',
     authUrl: '/auth/token',
@@ -64,7 +63,7 @@ const config: GatewayConfiguration = {
     paperwork: {
       paths: ['/paperwork-service/:owner/*'],
       proxy: {
-        forward: { url: 'http://paperwork-svc:3100', stripPath: true },
+        forward: { url: 'http://172.17.193.65:3100', stripPath: true },
         additionalProps: { authorization: true, authentication: true },
       },
     },
