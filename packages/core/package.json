@@ -2,7 +2,7 @@
   "name": "gatekeeper-core",
   "version": "1.0.0",
   "engines": {
-    "node": ">=10.*"
+    "node": ">=11.*"
   },
   "main": "build/index.js",
   "typings": "build/types/src/index.d.ts",
@@ -19,25 +19,26 @@
     "@types/deep-equal": "^1.0.1",
     "@types/jest": "^24.0.11",
     "@types/node": "^12.0.12",
+    "autoprefixer": "7.1.6",
     "babel-jest": "^24.8.0",
+    "fork-ts-checker-webpack-plugin": "^0.2.8",
     "jest": "^24.7.1",
     "pre-push": "^0.1.1",
     "ts-jest": "^24.0.2",
+    "ts-loader": "^2.3.7",
     "tslint": "^5.15.0",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.4.2",
-    "ts-loader": "^2.3.7",
-    "webpack": "3.8.1",
-    "webpack-cli": "^3.3.9",
-    "fork-ts-checker-webpack-plugin": "^0.2.8",
     "uglifyjs-webpack-plugin": "1.2.5",
     "url-loader": "^1.1.2",
-    "autoprefixer": "7.1.6"
+    "webpack": "3.8.1",
+    "webpack-cli": "^3.3.9"
   },
   "dependencies": {
     "@types/object-path": "^0.11.0",
     "@types/path-to-regexp": "^1.7.0",
     "deep-equal": "^1.0.1",
+    "expression-eval": "^2.1.0",
     "object-path": "^0.11.4"
   }
 }
