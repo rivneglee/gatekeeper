@@ -11,3 +11,7 @@ export const NOTHING_EFFECT: Effect = {
 export const DENY_EFFECT: Effect = {
   type: EffectType.Deny,
 };
+
+export const ERROR_EFFECT: Effect = {
+  type: EffectType.Error,
+};

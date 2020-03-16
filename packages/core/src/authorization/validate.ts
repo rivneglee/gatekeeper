@@ -1,7 +1,7 @@
 import { Effect, EffectType, Method, Resource, Statement, When, Policy } from '../types';
 import match from './route-match';
 import evaluate from './evaluate';
-import { NOTHING_EFFECT } from './effects';
+import { NOTHING_EFFECT, ERROR_EFFECT } from './effects';
 
 const isResourceMatch = (
   resource: Resource,
@@ -30,12 +30,13 @@ const validateStatement = (
 };
 
 const EFFECT_PRIORITIES = {
-  [EffectType.Unauthorized]: 0,
-  [EffectType.Deny]: 1,
-  [EffectType.Redirect]: 2,
-  [EffectType.Custom]: 3,
-  [EffectType.Allow]: 4,
-  [EffectType.Nothing]: 5,
+  [EffectType.Error]: 0,
+  [EffectType.Unauthorized]: 1,
+  [EffectType.Deny]: 2,
+  [EffectType.Redirect]: 3,
+  [EffectType.Custom]: 4,
+  [EffectType.Allow]: 5,
+  [EffectType.Nothing]: 6,
 };
 
 const validatePolicies = (
@@ -62,6 +63,11 @@ export default (
   context: object,
   policyOrPolicies: Policy[] | Policy,
 ): Effect => {
-  const policies = policyOrPolicies instanceof Array ? policyOrPolicies : [policyOrPolicies];
-  return validatePolicies(uri, method, when, context, policies);
+  try {
+    const policies = policyOrPolicies instanceof Array ? policyOrPolicies : [policyOrPolicies];
+    return validatePolicies(uri, method, when, context, policies);
+  } catch (e) {
+    console.log(e.message);
+    return ERROR_EFFECT;
+  }
 };

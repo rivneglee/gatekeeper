@@ -14,6 +14,7 @@ export enum EffectType {
   Custom = 'custom',
   Redirect = 'redirect',
   Nothing = 'nothing',
+  Error = 'error',
 }
 
 export interface Effect {

@@ -67,7 +67,7 @@
           condition: response.body.userId!=request.params.userId
     - resource: 
         pattern: /admin/*
-        methods: *
+        methods: "*"
       ingress:
         - effect: 
             type: deny
