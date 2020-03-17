@@ -12,7 +12,7 @@ export default {
           effect: {
             type: 'deny',
           },
-          condition: 'token.userId!=request.params.userId',
+          condition: 'token.userId!=$routeParams.userId',
         },
       ],
     },
@@ -26,7 +26,7 @@ export default {
           effect: {
             type: 'deny',
           },
-          condition: 'token.userId!=response.body.userId',
+          condition: 'token.userId!=$response.body.userId',
         },
       ],
     },

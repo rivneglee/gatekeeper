@@ -1,5 +1,8 @@
 import { Effect, EffectType, Method, Resource, Statement, When, Policy } from '../types';
 import match from './route-match';
+// @ts-ignore
+import getRouteParams from 'router-params';
+
 import evaluate from './evaluate';
 import { NOTHING_EFFECT, ERROR_EFFECT } from './effects';
 
@@ -19,8 +22,10 @@ const validateStatement = (
 ): Effect => {
   const { resource, [when]: rules = [] } = statement;
   if (!isResourceMatch(resource, uri, method) || rules.length === 0) return NOTHING_EFFECT;
+  const matcher = getRouteParams(resource.pattern);
+  const $routeParams = matcher ? matcher(uri) : {};
   for (let i = 0; i < rules.length; i += 1) {
-    const effect = evaluate(rules[i], context);
+    const effect = evaluate(rules[i], { ...context, $routeParams });
     if (effect.type !==  EffectType.Nothing) {
       return effect;
     }

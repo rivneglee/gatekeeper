@@ -51,8 +51,8 @@ const setBodyForResponse = (response: any, data: any) => {
 export default (getPolicies: any, getContext: any) => (request: any, response: any, next: any) => {
   const context = {
     ...getContext(request, response),
-    request,
-    response,
+    $request: request,
+    $response: response,
   };
   const policies = getPolicies(request, response);
   const { send: originalSend } = response;
