@@ -7,7 +7,7 @@ statements:
     ingress:
       - effect:
           type: deny
-        condition: token.userId!=$request.params.userId
+        condition: token.userId!=$routeParams.userId
   - resource:
       pattern: /:userId/orders/:orderId
       methods: GET
