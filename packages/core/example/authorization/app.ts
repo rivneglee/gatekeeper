@@ -31,4 +31,4 @@ app.get('/admin/users', (request: Request, response: Response) => {
   response.json(users);
 });
 
-app.listen(9000, () => console.log('Example app is running at 9000'));
+app.listen(9000, () => console.log('Gatekeeper example is running at 9000'));

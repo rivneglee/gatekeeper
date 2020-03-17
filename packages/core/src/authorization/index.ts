@@ -48,13 +48,14 @@ const setBodyForResponse = (response: any, data: any) => {
   }
 };
 
-export default (getPolicies: any, getContext: any) => (request: any, response: any, next: any) => {
+export default (getPolicies: any, getContext: any) => async (request: any, response: any, next: any) => {
+  const clientContext = await getContext(request, response);
   const context = {
-    ...getContext(request, response),
+    ...clientContext,
     $request: request,
     $response: response,
   };
-  const policies = getPolicies(request, response);
+  const policies = await getPolicies(request, response);
   const { send: originalSend } = response;
   const ingressEffect = validate(request.path, request.method, When.Ingress, context, policies);
 
