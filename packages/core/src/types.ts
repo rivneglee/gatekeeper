@@ -52,7 +52,22 @@ export interface Statement {
 }
 
 export interface Policy {
-  version?: string;
   name: string;
   statements: Statement[];
+}
+
+export interface ForwardOptions {
+  ignorePath?: boolean;
+  stripPath?: boolean;
+  prependPath?: boolean;
+}
+
+export interface Endpoint {
+  resource: Resource;
+  target: string;
+  forward?: ForwardOptions;
+}
+
+export interface Proxy {
+  endpoints: Endpoint[];
 }

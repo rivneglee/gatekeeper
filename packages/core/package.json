@@ -5,7 +5,7 @@
     "node": ">=11.*"
   },
   "main": "build/index.js",
-  "typings": "build/types/src/index.d.ts",
+  "typings": "build/types/src/types.d.ts",
   "scripts": {
     "test": "npx jest",
     "test:watch": "npx jest --watchAll",
@@ -13,7 +13,8 @@
     "coverage": "npx jest --coverage",
     "lint": "npx tslint --force --fix \"./src/**/*.ts\" \"./tests/**/*.ts\"",
     "build": "webpack --display-error-details",
-    "example:auth": "nodemon --exec ts-node example/authorization/app.ts --resolveJsonModule --watch src example"
+    "example:auth": "nodemon --exec ts-node example/authorization/app.ts --resolveJsonModule --watch src example",
+    "example:proxy": "nodemon --exec ts-node example/proxy/app.ts --resolveJsonModule --watch src example"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -21,14 +22,17 @@
     "@types/body-parser": "^1.19.0",
     "@types/deep-equal": "^1.0.1",
     "@types/express": "^4.17.3",
+    "@types/express-http-proxy": "^1.5.12",
     "@types/jest": "^24.0.11",
     "@types/node": "^12.0.12",
+    "@types/object-path": "^0.11.0",
+    "@types/path-to-regexp": "^1.7.0",
+    "@types/url-parse": "^1.4.3",
     "@types/supertest": "^2.0.8",
     "@types/yamljs": "^0.2.30",
     "autoprefixer": "7.1.6",
     "babel-jest": "^24.8.0",
     "body-parser": "^1.19.0",
-    "express": "^4.17.1",
     "fork-ts-checker-webpack-plugin": "^0.2.8",
     "jest": "^24.7.1",
     "nodemon": "^2.0.2",
@@ -47,11 +51,12 @@
     "yamljs": "^0.3.0"
   },
   "dependencies": {
-    "@types/object-path": "^0.11.0",
-    "@types/path-to-regexp": "^1.7.0",
+    "express": "^4.17.1",
     "deep-equal": "^1.0.1",
+    "express-http-proxy": "^1.6.0",
     "expression-eval": "^2.1.0",
     "object-path": "^0.11.4",
-    "router-params": "^2.0.2"
+    "router-params": "^2.0.2",
+    "url-parse": "^1.4.7"
   }
 }

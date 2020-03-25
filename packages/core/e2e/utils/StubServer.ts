@@ -5,7 +5,6 @@ type Middleware = (req: Request, res: Response, next: NextFunction) => void;
 
 export interface StubServer {
   stub: (path: string, method: string, responseBody: object) => void;
-  unset: () => void;
   getApp: () => Express;
   close: () => void;
 }
@@ -15,23 +14,23 @@ export default class {
 
   private app: Express;
 
-  private server: Server;
+  private server?: Server;
 
-  constructor(middleware: Middleware = (req: Request, res: Response, next: any) => next()) {
+  private readonly port: number;
+
+  constructor(middleware: Middleware = (req: Request, res: Response, next: any) => next(), port = 9001) {
     this.middleware = middleware;
     this.app = express();
-    this.server = this.app.listen(9001);
+    this.port = port;
   }
 
   stub = (path: string, method: string, responseBody: object) => {
-    // @ts-ignore
-    this.app[method](path, this.middleware, (req: Request, response: Response) => response.json(responseBody));
-  }
-
-  unset = () => {
     this.close();
     this.app = express();
-    this.server = this.app.listen(9001);
+    this.app.use(this.middleware);
+    // @ts-ignore
+    this.app[method](path, (req: Request, response: Response) => response.json(responseBody));
+    this.server = this.app.listen(this.port);
   }
 
   getApp = () => this.app;

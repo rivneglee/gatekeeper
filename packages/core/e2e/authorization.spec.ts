@@ -1,16 +1,14 @@
 import request from 'supertest';
-import Server, { StubServer } from './StubServer';
-import policy from './policy';
-import createGatekeeperMiddleware from '../src/authorization';
+import Server, { StubServer } from './utils/StubServer';
+import policy from './fixtures/policy';
+import createAuthorizationMiddleware from '../src/authorization';
 
 describe('authorization', () => {
-  const gateKeeper = createGatekeeperMiddleware(
+  const authorizer = createAuthorizationMiddleware(
     () => [policy],
     () => ({ token: { userId: 'foo' } }),
   );
-  const server: StubServer = new Server(gateKeeper);
-
-  afterEach(() => server.unset());
+  const server: StubServer = new Server(authorizer);
 
   afterAll(() => server.close());
 

@@ -6,7 +6,6 @@
 
 ```json
   {
-    "version": "1.0.0",
     "name": "FreeTierAccess",
     "statements": [
       {
@@ -51,7 +50,6 @@
 - YAML
 
 ```yaml
-  version: 1.0.0
   name: FreeTierAccess
   statements:
     - resource: 
@@ -74,3 +72,20 @@
 ```
 
 
+### Proxy example
+
+- YAML
+
+```yaml
+endpoints:
+  - resource:
+      pattern: /api/:userId/orders/*
+      methods: "*"
+    target: http://localhost:9001/private
+  - resource:
+      pattern: /api/:userId/quotes/*
+      methods: "*"
+    target: http://localhost:9001/private
+    forward:
+      prependPath: true
+```

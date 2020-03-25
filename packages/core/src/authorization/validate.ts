@@ -1,5 +1,5 @@
 import { Effect, EffectType, Method, Resource, Statement, When, Policy } from '../types';
-import match from './route-match';
+import match from '../utils/route-match';
 // @ts-ignore
 import getRouteParams from 'router-params';
 

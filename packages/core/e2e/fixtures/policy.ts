@@ -1,5 +1,4 @@
 export default {
-  version: '1.0.0',
   name: 'FreeTierAccess',
   statements: [
     {

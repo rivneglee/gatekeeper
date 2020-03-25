@@ -1,17 +1,17 @@
 import express, { Request, Response } from 'express';
 import yamljs from 'yamljs';
 
-import createGatekeeperMiddleware from '../../src/authorization';
+import createAuthorizationMiddleware from '../../src/authorization';
 
 const app = express();
 const policy = yamljs.load(`${__dirname}/policy.yml`);
 
-const gateKeeper = createGatekeeperMiddleware(
+const authorizer = createAuthorizationMiddleware(
   () => [policy],
   () => ({ token: { userId: 'foo' } }),
 );
 
-app.use(gateKeeper);
+app.use(authorizer);
 
 const orders: any = {
   123: { userId: 'others', amount: 123.00 },

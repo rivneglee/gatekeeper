@@ -1,4 +1,4 @@
-import match from '../../src/authorization/route-match';
+import match from '../../src/utils/route-match';
 
 describe('route-match', () => {
   describe('should return true', () => {
