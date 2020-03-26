@@ -11,7 +11,8 @@
     "test:watch": "npx jest --watchAll",
     "test:e2e": "npx jest --config=./jest.e2e.config.js",
     "coverage": "npx jest --coverage",
-    "lint": "npx tslint --force --fix \"./src/**/*.ts\" \"./tests/**/*.ts\"",
+    "lint": "npx tslint --force \"./src/**/*.ts\" \"./tests/**/*.ts\"",
+    "lint:fix": "npx tslint --force --fix \"./src/**/*.ts\" \"./tests/**/*.ts\"",
     "build": "webpack --display-error-details",
     "example:auth": "nodemon --exec ts-node example/authorization/app.ts --resolveJsonModule --watch src example",
     "example:proxy": "nodemon --exec ts-node example/proxy/app.ts --resolveJsonModule --watch src example"
