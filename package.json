@@ -2,6 +2,7 @@
   "name": "gatekeeper",
   "private": true,
   "scripts": {
+    "postinstall": "lerna bootstrap",
     "test": "lerna run test",
     "build": "lerna run build",
     "lint": "lerna run lint"
