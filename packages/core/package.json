@@ -52,11 +52,9 @@
     "yamljs": "^0.3.0"
   },
   "dependencies": {
-    "deep-equal": "^1.0.1",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.0",
     "expression-eval": "^2.1.0",
-    "object-path": "^0.11.4",
     "path-to-regexp": "^6.1.0",
     "router-params": "^2.0.2",
     "url-parse": "^1.4.7"
