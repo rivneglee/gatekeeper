@@ -5,7 +5,8 @@
     "postinstall": "lerna bootstrap --npm-client=yarn",
     "test": "lerna run test",
     "build": "lerna run build",
-    "lint": "lerna run lint"
+    "lint": "lerna run lint",
+    "test:e2e": "lerna run test:e2e"
   },
   "devDependencies": {
     "lerna": "^3.13.4"
